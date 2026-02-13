@@ -10,18 +10,15 @@
     /* Normal palette (darker, elegant) */
     --n1:#4a1f2d;   /* deep rose */
     --n2:#7a3b52;   /* muted mauve */
-    --n3:#b06a7e;   /* soft blush highlight */
+    --shadow: 0 22px 60px rgba(0,0,0,.35);
 
     /* Destiny palette */
     --d1:#0b1020;
     --d2:#1b1f3a;
-
-    --shadow: 0 22px 60px rgba(0,0,0,.35);
   }
 
   *{ box-sizing:border-box; }
 
-  /* ✅ NORMAL MODE: darker, not over bright */
   body{
     margin:0;
     height:100vh;
@@ -30,17 +27,15 @@
     text-align:center;
     color:#fff;
 
-    /* deep romantic dusk */
     background:
-      radial-gradient(circle at 30% 25%, rgba(176,106,126,.35) 0%, transparent 55%),
-      radial-gradient(circle at 70% 70%, rgba(176,106,126,.18) 0%, transparent 60%),
+      radial-gradient(circle at 30% 25%, rgba(176,106,126,.28) 0%, transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(176,106,126,.14) 0%, transparent 60%),
       linear-gradient(135deg, var(--n1), var(--n2));
 
     transition: background 0.6s ease;
     position: relative;
   }
 
-  /* vignette (reduces "washed out" look) */
   body::before{
     content:"";
     position:fixed;
@@ -51,7 +46,6 @@
     z-index:0;
   }
 
-  /* ❄️ DESTINY MODE */
   body.destiny{
     background:
       radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 45%),
@@ -74,7 +68,6 @@
     z-index: 1;
   }
 
-  /* ✅ Card: slightly darker in normal mode so it POPS */
   .card{
     width:min(860px, 94vw);
     padding: 34px 26px 28px;
@@ -127,6 +120,7 @@
     transition: transform .12s ease, opacity .12s ease, filter .12s ease;
     box-shadow: 0 12px 26px rgba(0,0,0,.24);
     user-select:none;
+    transform-origin: center;
   }
   button:active{ transform: translateY(1px) scale(.99); }
 
@@ -180,10 +174,7 @@
   }
   body.destiny .knob{ left: 30px; }
 
-  .section{
-    margin-top: 18px;
-    display:none;
-  }
+  .section{ margin-top: 18px; display:none; }
   .section.show{ display:block; }
 
   .buttons{
@@ -193,7 +184,7 @@
     justify-content:center;
     align-items:center;
     position: relative;
-    min-height: 72px;
+    min-height: 82px;
   }
 
   #yesBtn{
@@ -220,26 +211,12 @@
     text-shadow: 0 16px 40px rgba(0,0,0,.45);
   }
 
-  .qa{
-    margin: 14px auto 0;
-    max-width: 760px;
-    display:none;
-  }
+  .qa{ margin: 14px auto 0; max-width: 760px; display:none; }
   .qa.show{ display:block; }
 
-  .q{
-    font-size: clamp(16px, 2.4vw, 22px);
-    font-weight:900;
-    margin: 10px 0 12px;
-  }
+  .q{ font-size: clamp(16px, 2.4vw, 22px); font-weight:900; margin: 10px 0 12px; }
 
-  .ansRow{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-    margin-bottom: 10px;
-  }
+  .ansRow{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom: 10px; }
 
   .ansBtn{
     padding: 12px 16px;
@@ -253,19 +230,10 @@
   }
   .ansBtn:hover{ transform: translateY(-1px); }
 
-  .reply{
-    font-size: 14px;
-    opacity:.95;
-    min-height: 18px;
-  }
+  .reply{ font-size: 14px; opacity:.95; min-height: 18px; }
 
-  .footerTip{
-    margin-top: 12px;
-    font-size: 13px;
-    opacity:.90;
-  }
+  .footerTip{ margin-top: 12px; font-size: 13px; opacity:.90; }
 
-  /* floating hearts */
   .heart{
     position:fixed;
     bottom:-60px;
@@ -386,6 +354,39 @@
   let destinyMode = false;
   let musicReady = false;
 
+  // --- No/Yes scaling + attempts ---
+  let noAttempts = 0;
+  const MAX_ATTEMPTS = 5;
+
+  function applyScales(){
+    // No shrinks each attempt, Yes grows
+    const noScale  = Math.max(0.45, 1 - noAttempts * 0.12);
+    const yesScale = Math.min(1.65, 1 + noAttempts * 0.10);
+
+    noBtn.style.transform = `scale(${noScale})`;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // After 5 attempts: universe decides
+    if(noAttempts >= MAX_ATTEMPTS){
+      message.textContent = "✨ The universe has decided. ✨";
+      // Make the message linger and subtly push toward Yes
+      yesBtn.style.filter = "brightness(1.05)";
+      // No becomes tiny and keeps running anyway
+    }
+  }
+
+  function bumpAttempt(){
+    noAttempts++;
+    applyScales();
+  }
+
+  function resetAttempts(){
+    noAttempts = 0;
+    yesBtn.style.transform = "scale(1)";
+    noBtn.style.transform = "scale(1)";
+    yesBtn.style.filter = "";
+  }
+
   function setMode(isDestiny){
     destinyMode = isDestiny;
     body.classList.toggle("destiny", destinyMode);
@@ -422,6 +423,8 @@
   startExperience.addEventListener("click", async ()=>{
     modeScreen.classList.remove("show");
     mainScreen.classList.add("show");
+    resetAttempts();
+    message.textContent = "";
     await playMusic();
   });
 
@@ -432,25 +435,48 @@
     qaBox.classList.remove("show");
     message.textContent = "";
     noBtn.style.display = "";
+    resetAttempts();
 
     mainScreen.classList.remove("show");
     modeScreen.classList.add("show");
   });
 
+  // ✅ NO button: visible, but impossible to click + shrinks each try
   function moveNo(){
-    const padding = 18;
+    const padding = 20;
     const rect = noBtn.getBoundingClientRect();
     const maxX = window.innerWidth - rect.width - padding;
     const maxY = window.innerHeight - rect.height - padding;
+
     const x = Math.random() * (maxX - padding) + padding;
     const y = Math.random() * (maxY - padding) + padding;
+
+    noBtn.style.transition = "left 0.15s ease, top 0.15s ease";
     noBtn.style.left = x + "px";
     noBtn.style.top  = y + "px";
   }
-  noBtn.addEventListener("mouseover", moveNo);
-  noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
 
-  // Floating hearts (slower + softer)
+  function noEscape(e){
+    if(e) e.preventDefault();
+    bumpAttempt();
+    moveNo();
+  }
+
+  // runs away on EVERYTHING
+  noBtn.addEventListener("mouseover", noEscape);
+  noBtn.addEventListener("mousedown", noEscape);
+  noBtn.addEventListener("click", noEscape);
+  noBtn.addEventListener("touchstart", noEscape, {passive:false});
+  noBtn.addEventListener("focus", noEscape);
+
+  // extra chaos: relocates occasionally
+  setInterval(()=>{
+    if(mainScreen.classList.contains("show") && noBtn.style.display !== "none"){
+      moveNo();
+    }
+  }, 2000);
+
+  // Floating hearts
   const heartEmojis = ["💗","💖","💕","💘","💝","🌸"];
   setInterval(()=>{
     const h = document.createElement("div");
@@ -469,8 +495,7 @@
       a:["Dinner date 🍽️","Dessert date 🍰","Coffee + walk ☕🚶"],
       r:["Elegant choice. I’ll book the romance.","Sweet choice… literally 😌","K-drama walking scene unlocked."]},
     { q:"How should I behave on the date?",
-      a:["Gentleman mode 🕴️","Flirty mode 😏","Both ✅"],
-      r:["Classic and charming.","Bold. I like it.","Perfect. You understand the assignment 😌💘"]},
+      a:["Gentleman mode 🕴️nd turned night to day."]},
     { q:"If I hold your hand, what happens?",
       a:["Smile 😊","Blush 🙈","Pretend annoyed 😤❤️"],
       r:["Cute. I’m winning already.","Adorable. I’ll be careful.","Noted. I’ll act innocent 😌"]},
@@ -519,7 +544,6 @@
 
   yesBtn.addEventListener("click", ()=>{
     message.textContent = destinyMode ? "❄️ Destiny confirmed. You’re my Valentine." : "I knew it 😍 Best decision ever!";
-    noBtn.style.display="none";
     qaBox.classList.add("show");
     deckIndex = 0;
     renderQA();
