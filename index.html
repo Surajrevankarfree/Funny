@@ -1,158 +1,394 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Will You Be My Valentine? 💘</title>
 
 <style>
-body {
-    margin: 0;
+  :root{
+    --bg1:#ff758c;
+    --bg2:#ff7eb3;
+    --glass: rgba(255,255,255,.18);
+    --glass2: rgba(255,255,255,.28);
+  }
+
+  body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
     font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    height: 100vh;
-    overflow: hidden;
-    color: white;
-}
+    text-align:center;
+    color:#fff;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  }
 
-/* Floating hearts */
-.heart {
-    position: absolute;
-    bottom: -20px;
-    font-size: 20px;
-    animation: floatUp linear forwards;
-}
-@keyframes floatUp {
-    to { transform: translateY(-120vh); opacity:0; }
-}
+  .card{
+    width:min(760px, 92vw);
+    margin: 90px auto 0;
+    padding: 34px 26px 28px;
+    border-radius: 26px;
+    background: linear-gradient(180deg, var(--glass2), var(--glass));
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    backdrop-filter: blur(10px);
+    position:relative;
+    z-index:5;
+  }
 
-.card {
-    margin-top: 100px;
-}
+  h1{ margin: 8px 0 6px; font-size: 40px; }
+  p{ margin: 8px auto 18px; max-width: 52ch; opacity:.95; }
 
-button {
-    padding: 12px 25px;
-    font-size: 18px;
+  button{
+    padding: 12px 26px;
+    font-size:18px;
     border-radius: 30px;
-    border: none;
-    cursor: pointer;
+    border:none;
+    cursor:pointer;
     margin: 10px;
-}
+    box-shadow: 0 12px 26px rgba(0,0,0,.18);
+    transition: transform .12s ease;
+  }
+  button:active{ transform: translateY(1px) scale(.99); }
 
-#yesBtn {
-    background: #28a745;
-    color: white;
-}
+  #yesBtn{ background:#28a745; color:#fff; font-weight:700; }
+  #noBtn{
+    background: rgba(255,255,255,.22);
+    border: 1px solid rgba(255,255,255,.25);
+    color:#fff;
+    position:absolute;
+    left: 55%;
+    top: 8px;
+    backdrop-filter: blur(8px);
+  }
 
-#noBtn {
-    background: #dc3545;
-    color: white;
-    position: absolute;
-}
+  #message{ margin-top: 18px; font-size: 24px; font-weight:700; min-height: 30px; }
+  #questionBox{ margin-top: 14px; font-size: 20px; min-height: 26px; }
+  #tip{ margin-top: 14px; font-size: 13px; opacity:.9; }
 
-#message {
-    margin-top: 20px;
-    font-size: 24px;
-}
+  /* floating hearts */
+  .heart{
+    position:absolute;
+    bottom:-30px;
+    font-size: 18px;
+    animation: floatUp linear forwards;
+    opacity:.85;
+    z-index:1;
+  }
+  @keyframes floatUp{
+    from{ transform: translateY(0); opacity:0; }
+    10%{ opacity:.85; }
+    to{ transform: translateY(-120vh); opacity:0; }
+  }
 
-#questionBox {
-    margin-top: 25px;
-    font-size: 20px;
-}
+  /* confetti canvas */
+  canvas{ position:fixed; inset:0; pointer-events:none; z-index:10; }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-}
+  /* ❄️ K-DRAMA GOBLIN MODE (Destiny Snow Scene) */
+  body.goblin-kdrama{
+    background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.25), transparent 45%),
+                radial-gradient(circle at 70% 30%, rgba(255,255,255,.18), transparent 40%),
+                linear-gradient(135deg, #0b1020, #1b1f3a);
+  }
+  body.goblin-kdrama .card{
+    background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
+    border: 1px solid rgba(255,255,255,.18);
+  }
+
+  /* Snow */
+  .snow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    display:none;
+  }
+  body.goblin-kdrama .snow{ display:block; }
+
+  .flake{
+    position:absolute;
+    top:-10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.9);
+    filter: blur(.2px);
+    opacity:.9;
+    animation: snowFall linear forwards;
+  }
+  @keyframes snowFall{
+    to{
+      transform: translateY(110vh) translateX(var(--drift));
+      opacity: 0;
+    }
+  }
+
+  .modeBadge{
+    display:inline-block;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.22);
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .musicCtl{
+    margin-top: 12px;
+    font-size: 13px;
+    opacity:.95;
+  }
+  .tinyBtn{
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    color:#fff;
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow:none;
+    margin-left: 6px;
+  }
 </style>
 </head>
 
 <body>
+  <canvas id="confetti"></canvas>
+  <div class="snow" id="snow"></div>
 
-<canvas id="confetti"></canvas>
-
-<div class="card">
+  <div class="card">
+    <div class="modeBadge" id="modeBadge">💌 Cute Romantic Mode</div>
     <h1>Will you be my Valentine? 💕</h1>
-    <button id="yesBtn">Yes 😍</button>
-    <button id="noBtn">No 🙈</button>
+    <p>
+      I brought flowers, courage, and a tiny bit of web development.
+      The “No” option is… shy. 🙈
+    </p>
+
+    <div style="position:relative; min-height:72px;">
+      <button id="yesBtn">Yes 😍</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
 
     <div id="message"></div>
     <div id="questionBox"></div>
-</div>
 
-<audio id="bgMusic" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c2f43fdf0.mp3?filename=romantic-ambient-111186.mp3" type="audio/mpeg">
-</audio>
+    <div class="musicCtl">
+      🎵 Music:
+      <button class="tinyBtn" id="toggleMusic">Play</button>
+      <span id="musicStatus">off</span>
+    </div>
+
+    <div id="tip">Secret: press <b>G</b> for “Goblin K-drama mode” ❄️</div>
+  </div>
+
+  <!-- Royalty-free romantic track (safe) -->
+  <audio id="romanticMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c2f43fdf0.mp3?filename=romantic-ambient-111186.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Royalty-free K-drama-ish piano / winter vibe (safe) -->
+  <audio id="goblinKMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/12/audio_6b6f2b8d9d.mp3?filename=emotional-piano-ambient-121995.mp3" type="audio/mpeg">
+  </audio>
 
 <script>
+  // ---------- Elements ----------
+  const romanticMusic = document.getElementById("romanticMusic");
+  const goblinKMusic  = document.getElementById("goblinKMusic");
+  const toggleMusic   = document.getElementById("toggleMusic");
+  const musicStatus   = document.getElementById("musicStatus");
+  const modeBadge     = document.getElementById("modeBadge");
+  const noBtn         = document.getElementById("noBtn");
+  const yesBtn        = document.getElementById("yesBtn");
+  const message       = document.getElementById("message");
+  const questionBox   = document.getElementById("questionBox");
+  const snowWrap      = document.getElementById("snow");
 
-// MUSIC
-const bgMusic = document.getElementById("bgMusic");
-document.addEventListener("click", () => {
-    bgMusic.play().catch(()=>{});
-}, { once:true });
+  let activeTrack = "romantic";
+  let goblinMode = false;
 
-// RUNAWAY NO BUTTON
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
-    noBtn.style.left = Math.random() * window.innerWidth + "px";
-    noBtn.style.top = Math.random() * window.innerHeight + "px";
-});
-
-// CONFETTI
-const canvas = document.getElementById("confetti");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-function shootConfetti(){
-    for(let i=0;i<200;i++){
-        const x = Math.random()*canvas.width;
-        const y = Math.random()*canvas.height/2;
-        ctx.fillStyle = `hsl(${Math.random()*360},100%,70%)`;
-        ctx.fillRect(x,y,5,10);
+  async function playActive(){
+    try{
+      if(activeTrack === "romantic"){
+        goblinKMusic.pause();
+        await romanticMusic.play();
+      } else {
+        romanticMusic.pause();
+        await goblinKMusic.play();
+      }
+      toggleMusic.textContent = "Pause";
+      musicStatus.textContent = "on";
+    }catch(e){
+      toggleMusic.textContent = "Play";
+      musicStatus.textContent = "tap to start";
     }
-    setTimeout(()=>ctx.clearRect(0,0,canvas.width,canvas.height),2000);
-}
+  }
 
-// FLOAT HEARTS
-setInterval(()=>{
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💗";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(Math.random()*3+4)+"s";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),7000);
-},300);
+  function pauseAll(){
+    romanticMusic.pause();
+    goblinKMusic.pause();
+    toggleMusic.textContent = "Play";
+    musicStatus.textContent = "off";
+  }
 
-// YES CLICK
-const yesBtn=document.getElementById("yesBtn");
-const message=document.getElementById("message");
-const questionBox=document.getElementById("questionBox");
+  toggleMusic.addEventListener("click", async () => {
+    const isPaused = (activeTrack === "romantic") ? romanticMusic.paused : goblinKMusic.paused;
+    if(isPaused) await playActive();
+    else pauseAll();
+  });
 
-const cuteNaughtyQuestions = [
-"Okay Miss Valentine… dinner date first, or slow dance under fairy lights? ✨",
-"If I steal one kiss… are you calling the police or asking for another? 😌",
-"Who falls first… or are we both pretending we're not already there? 💘",
-"If we get caught staring at each other… what's our excuse? 😏",
-"Serious question… how are you this dangerous and this adorable at the same time? 💋",
-"On a scale of 1 to forever… how long are we celebrating this Valentine? 😉"
-];
+  // Help autoplay: start on first click anywhere
+  document.addEventListener("click", () => playActive(), { once:true });
 
-yesBtn.addEventListener("click", ()=>{
-    message.innerHTML="I knew it 🥰 Best decision of 2026!";
-    shootConfetti();
+  // ---------- Runaway NO ----------
+  function moveNo(){
+    const padding = 18;
+    const rect = noBtn.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width - padding;
+    const maxY = window.innerHeight - rect.height - padding;
+    const x = Math.random() * (maxX - padding) + padding;
+    const y = Math.random() * (maxY - padding) + padding;
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+  noBtn.addEventListener("mouseover", moveNo);
+  noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
+
+  // ---------- Hearts ----------
+  const heartEmojis = ["💗","💖","💕","💘","💝","🌸"];
+  setInterval(()=>{
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (Math.random()*16 + 14) + "px";
+    h.style.animationDuration = (Math.random()*3.5 + 4.5) + "s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 9000);
+  }, 380);
+
+  // ---------- Confetti ----------
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  addEventListener("resize", resize); resize();
+
+  let pieces = [];
+  function burst(){
+    pieces = [];
+    const count = 220;
+    const ox = innerWidth/2, oy = innerHeight/2 - 60;
+    for(let i=0;i<count;i++){
+      pieces.push({
+        x:ox, y:oy,
+        vx:(Math.random()*10-5)*1.2,
+        vy:(Math.random()*-10-2)*1.35,
+        g:0.22+Math.random()*0.08,
+        w:6+Math.random()*6,
+        h:10+Math.random()*10,
+        r:Math.random()*Math.PI,
+        vr:(Math.random()*0.2-0.1),
+        life:0, max:240+Math.random()*60
+      });
+    }
+    requestAnimationFrame(tick);
+  }
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive=0;
+    for(const p of pieces){
+      p.life++; if(p.life>p.max) continue;
+      alive++;
+      p.vy += p.g;
+      p.x += p.vx; p.y += p.vy;
+      p.r += p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.r);
+      const hue = (p.life*2 + (p.x % 360)) % 360;
+      ctx.fillStyle = `hsla(${hue}, 90%, 65%, .95)`;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+    if(alive>0) requestAnimationFrame(tick);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+
+  // ---------- Questions ----------
+  const cuteFlirty = [
+    "Dinner date first, or slow dance under fairy lights? ✨",
+    "If I steal one kiss… do I owe you interest? 😏",
+    "Movie night: cuddles mandatory or highly recommended? 🍿",
+    "Should I hold your hand now or pretend I’m brave later? 😌",
+    "You’re this cute on purpose, aren’t you? 💗",
+    "Pick one: coffee date ☕ or dessert date 🍰 (this is not optional)."
+  ];
+
+  const goblinKDrama = [
+    "If fate wrote our story… can I be the part where you smile? ❄️💖",
+    "Should we meet under the snowfall like a K-drama scene? ☁️❄️",
+    "If I say ‘stay’, will you stay… just a little longer? 😌",
+    "Are you my destiny… or am I just dramatic and right? 💘",
+    "If I find your name in my heart… do I get to keep it there? 💝",
+    "One question: will you be my ‘forever’ in soft winter light? ❄️"
+  ];
+
+  function ask(){
+    const list = goblinMode ? goblinKDrama : cuteFlirty;
+    questionBox.textContent = list[Math.floor(Math.random()*list.length)];
+  }
+
+  // ---------- YES ----------
+  yesBtn.addEventListener("click", ()=>{
+    message.textContent = goblinMode
+      ? "❄️ Destiny confirmed. You’re my Valentine."
+      : "I knew it 😍 Best decision ever!";
+    burst();
     noBtn.style.display="none";
-    askQuestion();
-});
+    ask();
+    playActive();
+  });
 
-function askQuestion(){
-    let random=cuteNaughtyQuestions[Math.floor(Math.random()*cuteNaughtyQuestions.length)];
-    questionBox.innerHTML=random;
-}
+  // ---------- Snow generator ----------
+  function spawnFlake(){
+    if(!goblinMode) return;
+    const f = document.createElement("div");
+    f.className="flake";
+    f.style.left = Math.random()*100 + "vw";
+    f.style.setProperty("--drift", (Math.random()*120 - 60) + "px");
+    const size = 3 + Math.random()*4;
+    f.style.width = size + "px";
+    f.style.height = size + "px";
+    f.style.animationDuration = (Math.random()*3.5 + 3.5) + "s";
+    snowWrap.appendChild(f);
+    setTimeout(()=>f.remove(), 8000);
+  }
+  setInterval(spawnFlake, 120);
+
+  // ---------- Toggle Goblin K-drama Mode (press G) ----------
+  function toggleGoblin(){
+    goblinMode = !goblinMode;
+    document.body.classList.toggle("goblin-kdrama", goblinMode);
+
+    if(goblinMode){
+      activeTrack = "goblin";
+      modeBadge.textContent = "❄️ Goblin K-drama Mode (Destiny)";
+      message.textContent = "❄️ The snow is falling. Fate is loading…";
+      // move NO a bit (still playful)
+      noBtn.style.display = "";
+      moveNo();
+    }else{
+      activeTrack = "romantic";
+      modeBadge.textContent = "💌 Cute Romantic Mode";
+      message.textContent = "";
+      questionBox.textContent = "";
+      noBtn.style.display = "";
+    }
+    playActive();
+  }
+
+  document.addEventListener("keydown", (e)=>{
+    if(e.key.toLowerCase() === "g") toggleGoblin();
+  });
 
 </script>
 </body>
