@@ -7,14 +7,21 @@
 
 <style>
   :root{
-    --glass1: rgba(255,255,255,.14);
-    --glass2: rgba(255,255,255,.22);
-    --shadow: 0 18px 50px rgba(0,0,0,.22);
+    /* Normal palette (darker, elegant) */
+    --n1:#4a1f2d;   /* deep rose */
+    --n2:#7a3b52;   /* muted mauve */
+    --n3:#b06a7e;   /* soft blush highlight */
+
+    /* Destiny palette */
+    --d1:#0b1020;
+    --d2:#1b1f3a;
+
+    --shadow: 0 22px 60px rgba(0,0,0,.35);
   }
 
   *{ box-sizing:border-box; }
 
-  /* ✅ NORMAL MODE (soft + elegant) */
+  /* ✅ NORMAL MODE: darker, not over bright */
   body{
     margin:0;
     height:100vh;
@@ -23,20 +30,38 @@
     text-align:center;
     color:#fff;
 
+    /* deep romantic dusk */
     background:
-      radial-gradient(circle at 30% 30%, rgba(255, 214, 230, 0.32) 0%, transparent 52%),
-      radial-gradient(circle at 70% 70%, rgba(255, 235, 245, 0.26) 0%, transparent 58%),
-      linear-gradient(135deg, #d58a9e, #b56a82);
+      radial-gradient(circle at 30% 25%, rgba(176,106,126,.35) 0%, transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(176,106,126,.18) 0%, transparent 60%),
+      linear-gradient(135deg, var(--n1), var(--n2));
 
     transition: background 0.6s ease;
+    position: relative;
+  }
+
+  /* vignette (reduces "washed out" look) */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.25) 55%, rgba(0,0,0,.45) 100%);
+    z-index:0;
   }
 
   /* ❄️ DESTINY MODE */
   body.destiny{
     background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,.22), transparent 45%),
-      radial-gradient(circle at 70% 30%, rgba(255,255,255,.14), transparent 42%),
-      linear-gradient(135deg, #0b1020, #1b1f3a);
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 45%),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,.10), transparent 42%),
+      linear-gradient(135deg, var(--d1), var(--d2));
+  }
+
+  body.destiny::before{
+    background:
+      radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.28) 55%, rgba(0,0,0,.55) 100%);
   }
 
   .wrap{
@@ -45,23 +70,25 @@
     align-items:center;
     justify-content:center;
     padding: 18px;
+    position: relative;
+    z-index: 1;
   }
 
+  /* ✅ Card: slightly darker in normal mode so it POPS */
   .card{
     width:min(860px, 94vw);
     padding: 34px 26px 28px;
     border-radius: 28px;
-    background: linear-gradient(180deg, var(--glass2), var(--glass1));
-    border: 1px solid rgba(255,255,255,.20);
+    background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
+    border: 1px solid rgba(255,255,255,.16);
     box-shadow: var(--shadow);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     position:relative;
-    z-index:5;
   }
 
   body.destiny .card{
-    background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
-    border: 1px solid rgba(255,255,255,.16);
+    background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.07));
+    border: 1px solid rgba(255,255,255,.14);
   }
 
   .badge{
@@ -70,8 +97,8 @@
     align-items:center;
     padding:10px 14px;
     border-radius: 999px;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.16);
     font-size: 14px;
     margin-bottom: 12px;
     font-weight: 800;
@@ -81,7 +108,7 @@
     margin: 10px 0 6px;
     font-size: clamp(30px, 4.8vw, 44px);
     line-height:1.1;
-    text-shadow: 0 14px 36px rgba(0,0,0,.25);
+    text-shadow: 0 16px 40px rgba(0,0,0,.45);
   }
 
   p{
@@ -98,10 +125,9 @@
     border-radius: 999px;
     cursor:pointer;
     transition: transform .12s ease, opacity .12s ease, filter .12s ease;
-    box-shadow: 0 12px 26px rgba(0,0,0,.18);
+    box-shadow: 0 12px 26px rgba(0,0,0,.24);
     user-select:none;
   }
-
   button:active{ transform: translateY(1px) scale(.99); }
 
   .btnRow{
@@ -119,22 +145,14 @@
     font-weight:900;
   }
 
-  .ghost{
-    background: rgba(255,255,255,.16);
-    border:1px solid rgba(255,255,255,.20);
-    color:#fff;
-    box-shadow:none;
-    font-weight:800;
-  }
-
   .modeToggle{
     display:inline-flex;
     align-items:center;
     gap:10px;
     padding: 10px 14px;
     border-radius: 999px;
-    background: rgba(255,255,255,.14);
-    border:1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.14);
     font-size: 14px;
     font-weight:900;
   }
@@ -142,8 +160,8 @@
   .switch{
     width: 56px;
     height: 30px;
-    background: rgba(0,0,0,.22);
-    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(0,0,0,.28);
+    border: 1px solid rgba(255,255,255,.18);
     border-radius: 999px;
     position: relative;
     cursor:pointer;
@@ -160,14 +178,12 @@
     left: 2px;
     transition: left .18s ease;
   }
-
   body.destiny .knob{ left: 30px; }
 
   .section{
     margin-top: 18px;
     display:none;
   }
-
   .section.show{ display:block; }
 
   .buttons{
@@ -187,8 +203,8 @@
   }
 
   #noBtn{
-    background: rgba(255,255,255,.18);
-    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
     color:#fff;
     position:absolute;
     left: 55%;
@@ -201,7 +217,7 @@
     font-size: clamp(18px, 2.6vw, 26px);
     font-weight:900;
     min-height: 34px;
-    text-shadow: 0 14px 36px rgba(0,0,0,.25);
+    text-shadow: 0 16px 40px rgba(0,0,0,.45);
   }
 
   .qa{
@@ -209,7 +225,6 @@
     max-width: 760px;
     display:none;
   }
-
   .qa.show{ display:block; }
 
   .q{
@@ -230,13 +245,12 @@
     padding: 12px 16px;
     font-size: 15px;
     border-radius: 999px;
-    background: rgba(255,255,255,.16);
-    border: 1px solid rgba(255,255,255,.20);
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.16);
     color:#fff;
     box-shadow:none;
     font-weight:800;
   }
-
   .ansBtn:hover{ transform: translateY(-1px); }
 
   .reply{
@@ -248,7 +262,7 @@
   .footerTip{
     margin-top: 12px;
     font-size: 13px;
-    opacity:.92;
+    opacity:.90;
   }
 
   /* floating hearts */
@@ -256,16 +270,16 @@
     position:fixed;
     bottom:-60px;
     font-size: 18px;
-    opacity:.75;
+    opacity:.65;
     pointer-events:none;
     animation: floatUp linear forwards;
-    filter: drop-shadow(0 8px 18px rgba(0,0,0,.15));
-    z-index:1;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.20));
+    z-index: 0;
   }
 
   @keyframes floatUp{
     from{ transform: translateY(0) translateX(0) scale(.9); opacity:0; }
-    10%{ opacity:.8; }
+    10%{ opacity:.65; }
     to{ transform: translateY(-120vh) translateX(var(--drift)) scale(1.25); opacity:0; }
   }
 </style>
@@ -436,6 +450,7 @@
   noBtn.addEventListener("mouseover", moveNo);
   noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
 
+  // Floating hearts (slower + softer)
   const heartEmojis = ["💗","💖","💕","💘","💝","🌸"];
   setInterval(()=>{
     const h = document.createElement("div");
@@ -443,11 +458,11 @@
     h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
     h.style.left = Math.random()*100 + "vw";
     h.style.setProperty("--drift", (Math.random()*140 - 70) + "px");
-    h.style.fontSize = (Math.random()*16 + 14) + "px";
-    h.style.animationDuration = (Math.random()*3.5 + 4.5) + "s";
+    h.style.fontSize = (Math.random()*14 + 12) + "px";
+    h.style.animationDuration = (Math.random()*4.0 + 6.0) + "s";
     document.body.appendChild(h);
-    setTimeout(()=>h.remove(), 9000);
-  }, 520);
+    setTimeout(()=>h.remove(), 11000);
+  }, 700);
 
   const cuteDeck = [
     { q:"Choose our first Valentine mission 💞",
