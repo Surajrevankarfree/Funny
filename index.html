@@ -22,9 +22,24 @@
       radial-gradient(circle at 80% 30%, #ffe5f1 0%, transparent 40%),
       linear-gradient(135deg, var(--pink2), var(--pink1));
   }
+
+  body.destiny{
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.22), transparent 45%),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,.16), transparent 40%),
+      linear-gradient(135deg, #0b1020, #1b1f3a);
+  }
+
+  .wrap{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 18px;
+  }
+
   .card{
-    width:min(820px, 92vw);
-    margin: 86px auto 0;
+    width:min(860px, 94vw);
     padding: 34px 26px 28px;
     border-radius: 28px;
     background: linear-gradient(180deg, var(--glass2), var(--glass1));
@@ -34,6 +49,12 @@
     position:relative;
     z-index:5;
   }
+
+  body.destiny .card{
+    background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
+    border: 1px solid rgba(255,255,255,.18);
+  }
+
   .badge{
     display:inline-flex; gap:10px; align-items:center;
     padding:10px 14px; border-radius: 999px;
@@ -41,14 +62,10 @@
     border: 1px solid rgba(255,255,255,.22);
     font-size: 14px; margin-bottom: 12px;
   }
-  h1{ margin: 10px 0 6px; font-size: clamp(30px, 4.8vw, 44px); line-height:1.1; }
-  p{ margin: 10px auto 18px; max-width: 56ch; font-size: clamp(15px, 2.2vw, 18px); opacity:.95; }
 
-  .buttons{
-    margin-top: 18px; display:flex; gap:16px;
-    justify-content:center; align-items:center;
-    position: relative; min-height: 72px;
-  }
+  h1{ margin: 10px 0 6px; font-size: clamp(30px, 4.8vw, 44px); line-height:1.1; }
+  p{ margin: 10px auto 18px; max-width: 60ch; font-size: clamp(15px, 2.2vw, 18px); opacity:.95; }
+
   button{
     border:none; padding: 14px 26px; font-size: 18px;
     border-radius: 999px; cursor:pointer;
@@ -58,154 +75,249 @@
   }
   button:active{ transform: translateY(1px) scale(.99); }
 
+  .btnRow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    justify-content:center;
+    align-items:center;
+    margin-top: 16px;
+  }
+
+  .primary{
+    background: linear-gradient(135deg, #2ee59d, #00c853);
+    color:#083b22; font-weight:900;
+  }
+
+  .ghost{
+    background: rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.22);
+    color:#fff;
+    box-shadow:none;
+    font-weight:800;
+  }
+
+  .modeToggle{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.22);
+    font-size: 14px;
+    font-weight:800;
+  }
+
+  .switch{
+    width: 56px;
+    height: 30px;
+    background: rgba(0,0,0,.22);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 999px;
+    position: relative;
+    cursor:pointer;
+    flex:none;
+  }
+  .knob{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.9);
+    position:absolute;
+    top: 2px;
+    left: 2px;
+    transition: left .18s ease;
+  }
+  body.destiny .knob{ left: 30px; }
+
+  .section{
+    margin-top: 18px;
+    display:none;
+  }
+  .section.show{ display:block; }
+
+  .buttons{
+    margin-top: 18px;
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    align-items:center;
+    position: relative;
+    min-height: 72px;
+  }
+
   #yesBtn{
     background: linear-gradient(135deg, #2ee59d, #00c853);
-    color:#083b22; font-weight:800;
+    color:#083b22; font-weight:900;
   }
+
   #noBtn{
     background: rgba(255,255,255,.22);
     border: 1px solid rgba(255,255,255,.25);
-    color:#fff; position:absolute;
-    left: 55%; top: 8px;
+    color:#fff;
+    position:absolute;
+    left: 55%;
+    top: 8px;
     backdrop-filter: blur(8px);
   }
 
-  .msg{ margin-top: 18px; font-size: clamp(18px, 2.6vw, 26px); font-weight:800; min-height: 34px; }
+  .msg{
+    margin-top: 18px;
+    font-size: clamp(18px, 2.6vw, 26px);
+    font-weight:900;
+    min-height: 34px;
+  }
 
   .qa{ margin: 14px auto 0; max-width: 760px; display:none; }
   .qa.show{ display:block; }
-  .q{ font-size: clamp(16px, 2.4vw, 22px); font-weight:700; margin: 10px 0 12px; }
+  .q{ font-size: clamp(16px, 2.4vw, 22px); font-weight:800; margin: 10px 0 12px; }
   .ansRow{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom: 10px; }
   .ansBtn{
     padding: 12px 16px; font-size: 15px; border-radius: 999px;
     background: rgba(255,255,255,.18);
     border: 1px solid rgba(255,255,255,.22);
     color:#fff; box-shadow:none;
+    font-weight:700;
   }
   .ansBtn:hover{ transform: translateY(-1px); }
   .reply{ font-size: 14px; opacity:.95; min-height: 18px; }
 
   .footerTip{ margin-top: 12px; font-size: 13px; opacity:.92; }
-  kbd{
-    padding:2px 8px; border-radius: 999px;
-    background: rgba(255,255,255,.16);
-    border: 1px solid rgba(255,255,255,.22);
-    font-size: 12px;
-  }
 
-  /* overlay */
-  .overlay{
-    position:fixed; inset:0; display:flex;
-    align-items:center; justify-content:center;
-    background: rgba(0,0,0,.26);
-    backdrop-filter: blur(6px);
-    z-index:50;
+  /* floating hearts */
+  .heart{
+    position:fixed;
+    bottom:-60px;
+    font-size: 18px;
+    opacity:.8;
+    pointer-events:none;
+    animation: floatUp linear forwards;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.15));
+    z-index:1;
   }
-  .overlayCard{
-    width:min(520px, 92vw);
-    background: rgba(255,255,255,.16);
-    border:1px solid rgba(255,255,255,.22);
-    border-radius: 24px;
-    padding: 22px 18px;
-    box-shadow: var(--shadow);
-  }
-  .overlayTitle{ font-size: 20px; font-weight: 800; margin-bottom: 10px; }
-  .overlaySub{ font-size: 14px; opacity:.95; margin-bottom: 14px; }
-  .overlayBtn{
-    background: rgba(255,255,255,.18);
-    border:1px solid rgba(255,255,255,.24);
-    color:#fff; font-weight: 800;
-    padding: 12px 18px; box-shadow:none;
-  }
-  .smallWarn{ margin-top: 10px; font-size: 13px; opacity:.95; }
-
-  /* Goblin K-drama mode */
-  body.goblin{
-    background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,.22), transparent 45%),
-      radial-gradient(circle at 70% 30%, rgba(255,255,255,.16), transparent 40%),
-      linear-gradient(135deg, #0b1020, #1b1f3a);
+  @keyframes floatUp{
+    from{ transform: translateY(0) translateX(0) scale(.9); opacity:0; }
+    10%{ opacity:.85; }
+    to{ transform: translateY(-120vh) translateX(var(--drift)) scale(1.25); opacity:0; }
   }
 </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <div class="card">
 
-  <div class="overlay" id="startOverlay">
-    <div class="overlayCard">
-      <div class="overlayTitle">Start the vibe 🎵</div>
-      <div class="overlaySub">Tap once to enable music (browser rule). Then Goblin mode can switch tracks too.</div>
-      <button class="overlayBtn" id="startBtn" type="button">▶ Start</button>
-      <div class="smallWarn" id="startWarn"></div>
-      <div class="footerTip" style="margin-top:12px;">Press <kbd>G</kbd> to toggle Goblin K-drama mode ❄️</div>
-    </div>
-  </div>
+      <!-- MODE SELECT SCREEN -->
+      <div id="modeScreen" class="section show">
+        <div class="badge" id="modeBadge">💌 Normal Mode</div>
+        <h1>Choose your vibe 💘</h1>
+        <p>
+          Pick how dramatic this love story should be.
+          Then hit <b>Start</b> and we’ll begin 😌
+        </p>
 
-  <div class="card">
-    <div class="badge" id="modeBadge">💌 Cute Romantic Mode</div>
-    <h1>Will you be my Valentine? 💕</h1>
-    <p>Choose wisely… the “No” button is shy 😅</p>
+        <div class="btnRow">
+          <div class="modeToggle">
+            <span id="modeLabelLeft">💌 Normal</span>
+            <div class="switch" id="modeSwitch" role="button" aria-label="Toggle Destiny Mode">
+              <div class="knob"></div>
+            </div>
+            <span id="modeLabelRight">❄️ Destiny</span>
+          </div>
 
-    <div class="buttons">
-      <button id="yesBtn" type="button">Yes 😍</button>
-      <button id="noBtn" type="button">No 🙈</button>
-    </div>
+          <button class="primary" id="startExperience" type="button">Start 🎵</button>
+        </div>
 
-    <div class="msg" id="message"></div>
-
-    <div class="qa" id="qaBox">
-      <div class="q" id="qText"></div>
-      <div class="ansRow" id="ansRow"></div>
-      <div class="reply" id="replyText"></div>
-
-      <div class="footerTip">
-        Music:
-        <button class="ansBtn" id="musicToggle" type="button">Play / Pause 🎵</button>
-        <button class="ansBtn" id="restartMusic" type="button">Restart ⟲</button>
+        <div class="footerTip">
+          Normal plays <b>stay_with_me_intro.mp3</b> • Destiny plays <b>beutiful_life.mp3</b>
+        </div>
       </div>
-    </div>
 
-    <div class="footerTip">Press <kbd>G</kbd> anytime to toggle Goblin K-drama mode ❄️</div>
+      <!-- MAIN VALENTINE SCREEN -->
+      <div id="mainScreen" class="section">
+        <div class="badge" id="mainBadge">💌 Normal Mode</div>
+        <h1>Will you be my Valentine? 💕</h1>
+        <p>Choose wisely… the “No” button is shy 😅</p>
+
+        <div class="buttons">
+          <button id="yesBtn" type="button">Yes 😍</button>
+          <button id="noBtn" type="button">No 🙈</button>
+        </div>
+
+        <div class="msg" id="message"></div>
+
+        <div class="qa" id="qaBox">
+          <div class="q" id="qText"></div>
+          <div class="ansRow" id="ansRow"></div>
+          <div class="reply" id="replyText"></div>
+
+          <div class="footerTip">
+            <button class="ansBtn" id="musicToggle" type="button">Play / Pause 🎵</button>
+            <button class="ansBtn" id="restartMusic" type="button">Restart ⟲</button>
+            <button class="ansBtn" id="backToMode" type="button">Change Mode ↩</button>
+          </div>
+        </div>
+
+        <div class="footerTip">Tip: answer the little questions after you click Yes 😌</div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- ✅ Normal Mode Music -->
-  <audio id="romanticMusic" loop preload="auto">
+  <!-- Normal Mode Music -->
+  <audio id="normalMusic" loop preload="auto">
     <source src="stay_with_me_intro.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- ✅ Goblin Mode Music -->
-  <audio id="goblinMusic" loop preload="auto">
+  <!-- Destiny Mode Music -->
+  <audio id="destinyMusic" loop preload="auto">
     <source src="beutiful_life.mp3" type="audio/mpeg">
   </audio>
 
 <script>
-  const startOverlay = document.getElementById("startOverlay");
-  const startBtn = document.getElementById("startBtn");
-  const startWarn = document.getElementById("startWarn");
+  // ---------- Elements ----------
+  const body = document.body;
 
+  const modeScreen = document.getElementById("modeScreen");
+  const mainScreen = document.getElementById("mainScreen");
   const modeBadge = document.getElementById("modeBadge");
-  const romanticMusic = document.getElementById("romanticMusic");
-  const goblinMusic = document.getElementById("goblinMusic");
+  const mainBadge = document.getElementById("mainBadge");
 
-  const noBtn = document.getElementById("noBtn");
+  const modeSwitch = document.getElementById("modeSwitch");
+  const startExperience = document.getElementById("startExperience");
+  const backToMode = document.getElementById("backToMode");
+
+  const normalMusic = document.getElementById("normalMusic");
+  const destinyMusic = document.getElementById("destinyMusic");
+
   const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
   const message = document.getElementById("message");
 
   const qaBox = document.getElementById("qaBox");
   const qText = document.getElementById("qText");
   const ansRow = document.getElementById("ansRow");
   const replyText = document.getElementById("replyText");
-
   const musicToggle = document.getElementById("musicToggle");
   const restartMusic = document.getElementById("restartMusic");
 
-  let goblinMode = false;
+  let destinyMode = false;
   let musicReady = false;
 
-  function activeAudio(){ return goblinMode ? goblinMusic : romanticMusic; }
-  function inactiveAudio(){ return goblinMode ? romanticMusic : goblinMusic; }
+  function setMode(isDestiny){
+    destinyMode = isDestiny;
+    body.classList.toggle("destiny", destinyMode);
 
-  async function forcePlay(){
+    const label = destinyMode ? "❄️ Destiny Mode" : "💌 Normal Mode";
+    modeBadge.textContent = label;
+    mainBadge.textContent = label;
+  }
+
+  function activeAudio(){ return destinyMode ? destinyMusic : normalMusic; }
+  function inactiveAudio(){ return destinyMode ? normalMusic : destinyMusic; }
+
+  async function playMusic(){
     const a = activeAudio();
     const b = inactiveAudio();
     try{
@@ -214,31 +326,42 @@
       a.load();
       await a.play();
       musicReady = true;
-      startWarn.textContent = "";
       return true;
-    }catch(err){
+    }catch(e){
       musicReady = false;
-      startWarn.textContent =
-        "Music blocked or file not found. Upload both: stay_with_me_intro.mp3 and beutiful_life.mp3 in same folder as Val.html";
+      alert("Music couldn't play. Check both MP3 files are uploaded next to Val.html and try again.");
       return false;
     }
   }
 
-  startBtn.addEventListener("click", async ()=>{
-    startOverlay.style.display = "none";
-    await forcePlay();
+  // Toggle mode via switch
+  modeSwitch.addEventListener("click", ()=>{
+    setMode(!destinyMode);
   });
 
-  musicToggle.addEventListener("click", async ()=>{
-    const a = activeAudio();
-    if(a.paused) await forcePlay();
-    else a.pause();
+  // Start Experience: user interaction -> music allowed
+  startExperience.addEventListener("click", async ()=>{
+    // show main screen
+    modeScreen.classList.remove("show");
+    mainScreen.classList.add("show");
+
+    // start music
+    await playMusic();
   });
 
-  restartMusic.addEventListener("click", async ()=>{
-    const a = activeAudio();
-    a.currentTime = 0;
-    await forcePlay();
+  // Change mode button (go back)
+  backToMode.addEventListener("click", ()=>{
+    // stop music
+    normalMusic.pause();
+    destinyMusic.pause();
+
+    // reset UI
+    qaBox.classList.remove("show");
+    message.textContent = "";
+    noBtn.style.display = "";
+    // show mode screen
+    mainScreen.classList.remove("show");
+    modeScreen.classList.add("show");
   });
 
   // Runaway NO
@@ -255,6 +378,20 @@
   noBtn.addEventListener("mouseover", moveNo);
   noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
 
+  // Floating hearts
+  const heartEmojis = ["💗","💖","💕","💘","💝","🌸"];
+  setInterval(()=>{
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.setProperty("--drift", (Math.random()*140 - 70) + "px");
+    h.style.fontSize = (Math.random()*16 + 14) + "px";
+    h.style.animationDuration = (Math.random()*3.5 + 4.5) + "s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 9000);
+  }, 420);
+
   // Q&A decks
   const cuteDeck = [
     { q:"Choose our first Valentine mission 💞",
@@ -268,22 +405,25 @@
       r:["Cute. I’m winning already.","Adorable. I’ll be careful.","Noted. I’ll act innocent 😌"]},
   ];
 
-  const goblinDeck = [
+  const destinyDeck = [
     { q:"❄️ Destiny scene: snowfall or umbrella?",
       a:["Snowfall ❄️","Umbrella ☂️","Both 🎬"],
       r:["The snow approves.","Classic K-drama move.","Main characters confirmed 😌"]},
     { q:"If I say ‘stay’, you say…",
       a:["Okay… just a little 😌","Only if you hold my hand 🤍","Say it again 🫶"],
       r:["My heart just did a little dance.","Deal. Hand locked.","Okay… (says it again)"]},
+    { q:"Final destiny line:",
+      a:["Yes, Valentine 💘","Yes… but dramatic ❄️","Yes… I choose you 😌"],
+      r:["Confirmed.","Under the streetlight, obviously.","That line just won the episode."]},
   ];
 
   let deckIndex = 0;
-  function deck(){ return goblinMode ? goblinDeck : cuteDeck; }
+  function deck(){ return destinyMode ? destinyDeck : cuteDeck; }
 
   function renderQA(){
     const d = deck();
     if(deckIndex >= d.length){
-      qText.textContent = goblinMode ? "❄️ Destiny complete. Valentine confirmed." : "💖 Perfect. Valentine confirmed.";
+      qText.textContent = destinyMode ? "❄️ Destiny complete. Valentine confirmed." : "💖 Perfect. Valentine confirmed.";
       ansRow.innerHTML = "";
       replyText.textContent = "Now send the link and pretend this was effortless 😌";
       return;
@@ -307,33 +447,28 @@
   }
 
   yesBtn.addEventListener("click", ()=>{
-    message.textContent = goblinMode ? "❄️ Destiny confirmed. You’re my Valentine." : "I knew it 😍 Best decision ever!";
+    message.textContent = destinyMode ? "❄️ Destiny confirmed. You’re my Valentine." : "I knew it 😍 Best decision ever!";
     noBtn.style.display="none";
     qaBox.classList.add("show");
     deckIndex = 0;
     renderQA();
   });
 
-  function toggleGoblin(){
-    goblinMode = !goblinMode;
-    document.body.classList.toggle("goblin", goblinMode);
-    modeBadge.textContent = goblinMode ? "❄️ Goblin K-drama Destiny Mode" : "💌 Cute Romantic Mode";
-
-    if(qaBox.classList.contains("show")){
-      deckIndex = 0;
-      renderQA();
-    }
-
-    // Switch track instantly if music already started
-    if(musicReady){
-      forcePlay();
-    }
-  }
-
-  document.addEventListener("keydown",(e)=>{
-    if(e.key.toLowerCase()==="g") toggleGoblin();
+  // Music controls
+  musicToggle.addEventListener("click", async ()=>{
+    const a = activeAudio();
+    if(a.paused) await playMusic();
+    else a.pause();
   });
-</script>
 
+  restartMusic.addEventListener("click", async ()=>{
+    const a = activeAudio();
+    a.currentTime = 0;
+    await playMusic();
+  });
+
+  // Default mode
+  setMode(false);
+</script>
 </body>
 </html>
