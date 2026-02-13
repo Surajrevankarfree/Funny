@@ -22,7 +22,6 @@
       radial-gradient(circle at 80% 30%, #ffe5f1 0%, transparent 40%),
       linear-gradient(135deg, var(--pink2), var(--pink1));
   }
-
   .card{
     width:min(820px, 92vw);
     margin: 86px auto 0;
@@ -35,7 +34,6 @@
     position:relative;
     z-index:5;
   }
-
   .badge{
     display:inline-flex; gap:10px; align-items:center;
     padding:10px 14px; border-radius: 999px;
@@ -43,7 +41,6 @@
     border: 1px solid rgba(255,255,255,.22);
     font-size: 14px; margin-bottom: 12px;
   }
-
   h1{ margin: 10px 0 6px; font-size: clamp(30px, 4.8vw, 44px); line-height:1.1; }
   p{ margin: 10px auto 18px; max-width: 56ch; font-size: clamp(15px, 2.2vw, 18px); opacity:.95; }
 
@@ -52,7 +49,6 @@
     justify-content:center; align-items:center;
     position: relative; min-height: 72px;
   }
-
   button{
     border:none; padding: 14px 26px; font-size: 18px;
     border-radius: 999px; cursor:pointer;
@@ -138,10 +134,10 @@
   <div class="overlay" id="startOverlay">
     <div class="overlayCard">
       <div class="overlayTitle">Start the vibe 🎵</div>
-      <div class="overlaySub">Tap once to enable music (browser rule). Then the page comes alive.</div>
+      <div class="overlaySub">Tap once to enable music (browser rule). Then Goblin mode can switch tracks too.</div>
       <button class="overlayBtn" id="startBtn" type="button">▶ Start</button>
       <div class="smallWarn" id="startWarn"></div>
-      <div class="footerTip" style="margin-top:12px;">Secret: press <kbd>G</kbd> for Goblin K-drama mode ❄️</div>
+      <div class="footerTip" style="margin-top:12px;">Press <kbd>G</kbd> to toggle Goblin K-drama mode ❄️</div>
     </div>
   </div>
 
@@ -172,15 +168,14 @@
     <div class="footerTip">Press <kbd>G</kbd> anytime to toggle Goblin K-drama mode ❄️</div>
   </div>
 
-  <!-- ✅ YOUR MP3 (upload it in same folder as Val.html) -->
+  <!-- ✅ Normal Mode Music -->
   <audio id="romanticMusic" loop preload="auto">
-    <source src="beutiful_life.mp3" type="audio/mpeg">
+    <source src="stay_with_me_intro.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Optional: a free backup piano track for Goblin mode (works online).
-       If you want, you can also upload your own goblin.mp3 and change this src to goblin.mp3 -->
-  <audio id="goblinMusic" loop preload="auto" crossorigin="anonymous">
-    <source src="https://cdn.pixabay.com/download/audio/2022/10/12/audio_6b6f2b8d9d.mp3?filename=emotional-piano-ambient-121995.mp3" type="audio/mpeg">
+  <!-- ✅ Goblin Mode Music -->
+  <audio id="goblinMusic" loop preload="auto">
+    <source src="beutiful_life.mp3" type="audio/mpeg">
   </audio>
 
 <script>
@@ -210,13 +205,12 @@
   function activeAudio(){ return goblinMode ? goblinMusic : romanticMusic; }
   function inactiveAudio(){ return goblinMode ? romanticMusic : goblinMusic; }
 
-  async function tryPlay(){
+  async function forcePlay(){
     const a = activeAudio();
     const b = inactiveAudio();
     try{
       b.pause();
       a.volume = 0.9;
-      // helps if audio was previously blocked or not loaded yet
       a.load();
       await a.play();
       musicReady = true;
@@ -224,34 +218,28 @@
       return true;
     }catch(err){
       musicReady = false;
-      startWarn.textContent = "Music blocked or file not found. Make sure beutiful_life.mp3 is uploaded in the same folder.";
+      startWarn.textContent =
+        "Music blocked or file not found. Upload both: stay_with_me_intro.mp3 and beutiful_life.mp3 in same folder as Val.html";
       return false;
     }
   }
 
-  // Always close overlay on Start, then attempt music
   startBtn.addEventListener("click", async ()=>{
     startOverlay.style.display = "none";
-    await tryPlay();
+    await forcePlay();
   });
 
   musicToggle.addEventListener("click", async ()=>{
     const a = activeAudio();
-    if(a.paused) await tryPlay();
+    if(a.paused) await forcePlay();
     else a.pause();
   });
 
   restartMusic.addEventListener("click", async ()=>{
     const a = activeAudio();
     a.currentTime = 0;
-    await tryPlay();
+    await forcePlay();
   });
-
-  function switchModeMusic(){
-    if(!musicReady) return;
-    inactiveAudio().pause();
-    activeAudio().play().catch(()=>{});
-  }
 
   // Runaway NO
   function moveNo(){
@@ -267,7 +255,7 @@
   noBtn.addEventListener("mouseover", moveNo);
   noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
 
-  // Interactive Q&A
+  // Q&A decks
   const cuteDeck = [
     { q:"Choose our first Valentine mission 💞",
       a:["Dinner date 🍽️","Dessert date 🍰","Coffee + walk ☕🚶"],
@@ -278,9 +266,6 @@
     { q:"If I hold your hand, what happens?",
       a:["Smile 😊","Blush 🙈","Pretend annoyed 😤❤️"],
       r:["Cute. I’m winning already.","Adorable. I’ll be careful.","Noted. I’ll act innocent 😌"]},
-    { q:"Final check:",
-      a:["Hug at the end 🤍","Hug + ‘see you again’ 😌","Hug + you pick the next date 😉"],
-      r:["Deal.","That’s dangerously cute.","Fair. I accept these terms."]},
   ];
 
   const goblinDeck = [
@@ -290,9 +275,6 @@
     { q:"If I say ‘stay’, you say…",
       a:["Okay… just a little 😌","Only if you hold my hand 🤍","Say it again 🫶"],
       r:["My heart just did a little dance.","Deal. Hand locked.","Okay… (says it again)"]},
-    { q:"Final destiny line:",
-      a:["Yes, Valentine 💘","Yes… but dramatic ❄️","Yes… I choose you 😌"],
-      r:["Confirmed.","Under the streetlight, obviously.","That line just won the episode."]},
   ];
 
   let deckIndex = 0;
@@ -330,19 +312,22 @@
     qaBox.classList.add("show");
     deckIndex = 0;
     renderQA();
-    // if user started music, keep it going
-    switchModeMusic();
   });
 
   function toggleGoblin(){
     goblinMode = !goblinMode;
     document.body.classList.toggle("goblin", goblinMode);
     modeBadge.textContent = goblinMode ? "❄️ Goblin K-drama Destiny Mode" : "💌 Cute Romantic Mode";
+
     if(qaBox.classList.contains("show")){
       deckIndex = 0;
       renderQA();
     }
-    switchModeMusic();
+
+    // Switch track instantly if music already started
+    if(musicReady){
+      forcePlay();
+    }
   }
 
   document.addEventListener("keydown",(e)=>{
