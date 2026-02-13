@@ -7,12 +7,9 @@
 
 <style>
   :root{
-    /* Normal palette (darker, elegant) */
-    --n1:#4a1f2d;   /* deep rose */
-    --n2:#7a3b52;   /* muted mauve */
+    --n1:#4a1f2d;
+    --n2:#7a3b52;
     --shadow: 0 22px 60px rgba(0,0,0,.35);
-
-    /* Destiny palette */
     --d1:#0b1020;
     --d2:#1b1f3a;
   }
@@ -20,27 +17,20 @@
   *{ box-sizing:border-box; }
 
   body{
-    margin:0;
-    height:100vh;
-    overflow:hidden;
+    margin:0; height:100vh; overflow:hidden;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    text-align:center;
-    color:#fff;
-
+    text-align:center; color:#fff;
     background:
       radial-gradient(circle at 30% 25%, rgba(176,106,126,.28) 0%, transparent 55%),
       radial-gradient(circle at 70% 70%, rgba(176,106,126,.14) 0%, transparent 60%),
       linear-gradient(135deg, var(--n1), var(--n2));
-
     transition: background 0.6s ease;
     position: relative;
   }
 
   body::before{
     content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
+    position:fixed; inset:0; pointer-events:none;
     background:
       radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.25) 55%, rgba(0,0,0,.45) 100%);
     z-index:0;
@@ -52,7 +42,6 @@
       radial-gradient(circle at 70% 30%, rgba(255,255,255,.10), transparent 42%),
       linear-gradient(135deg, var(--d1), var(--d2));
   }
-
   body.destiny::before{
     background:
       radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.28) 55%, rgba(0,0,0,.55) 100%);
@@ -63,9 +52,9 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    padding: 18px;
-    position: relative;
-    z-index: 1;
+    padding:18px;
+    position:relative;
+    z-index:1;
   }
 
   .card{
@@ -79,22 +68,12 @@
     position:relative;
   }
 
-  body.destiny .card{
-    background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.07));
-    border: 1px solid rgba(255,255,255,.14);
-  }
-
   .badge{
-    display:inline-flex;
-    gap:10px;
-    align-items:center;
-    padding:10px 14px;
-    border-radius: 999px;
+    display:inline-flex; gap:10px; align-items:center;
+    padding:10px 14px; border-radius:999px;
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255,255,255,.16);
-    font-size: 14px;
-    margin-bottom: 12px;
-    font-weight: 800;
+    font-size:14px; margin-bottom:12px; font-weight:800;
   }
 
   h1{
@@ -120,108 +99,92 @@
     transition: transform .12s ease, opacity .12s ease, filter .12s ease;
     box-shadow: 0 12px 26px rgba(0,0,0,.24);
     user-select:none;
-    transform-origin: center;
+    transform-origin:center;
   }
   button:active{ transform: translateY(1px) scale(.99); }
+  button:disabled{ cursor: default; opacity:.72; }
 
   .btnRow{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    justify-content:center;
-    align-items:center;
-    margin-top: 16px;
+    display:flex; flex-wrap:wrap; gap:12px;
+    justify-content:center; align-items:center;
+    margin-top:16px;
   }
 
   .primary{
     background: linear-gradient(135deg, #2ee59d, #00c853);
-    color:#083b22;
-    font-weight:900;
+    color:#083b22; font-weight:900;
   }
 
   .modeToggle{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    padding: 10px 14px;
-    border-radius: 999px;
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:999px;
     background: rgba(255,255,255,.10);
     border:1px solid rgba(255,255,255,.14);
-    font-size: 14px;
-    font-weight:900;
+    font-size:14px; font-weight:900;
   }
-
   .switch{
-    width: 56px;
-    height: 30px;
+    width:56px; height:30px;
     background: rgba(0,0,0,.28);
     border: 1px solid rgba(255,255,255,.18);
-    border-radius: 999px;
-    position: relative;
-    cursor:pointer;
-    flex:none;
+    border-radius:999px; position:relative;
+    cursor:pointer; flex:none;
   }
-
   .knob{
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+    width:24px; height:24px;
+    border-radius:50%;
     background: rgba(255,255,255,.92);
-    position:absolute;
-    top: 2px;
-    left: 2px;
-    transition: left .18s ease;
+    position:absolute; top:2px; left:2px;
+    transition:left .18s ease;
   }
-  body.destiny .knob{ left: 30px; }
+  body.destiny .knob{ left:30px; }
 
-  .section{ margin-top: 18px; display:none; }
+  .section{ margin-top:18px; display:none; }
   .section.show{ display:block; }
 
   .buttons{
-    margin-top: 18px;
-    display:flex;
-    gap:16px;
-    justify-content:center;
-    align-items:center;
-    position: relative;
-    min-height: 82px;
+    margin-top:18px;
+    display:flex; gap:16px;
+    justify-content:center; align-items:center;
+    position:relative; min-height:82px;
   }
 
   #yesBtn{
     background: linear-gradient(135deg, #2ee59d, #00c853);
-    color:#083b22;
-    font-weight:900;
+    color:#083b22; font-weight:900;
+  }
+
+  #yesBtn.locked{
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.20);
+    color:#fff;
+    box-shadow:none;
   }
 
   #noBtn{
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255,255,255,.18);
     color:#fff;
-    position:absolute;
-    left: 55%;
-    top: 8px;
+    position:absolute; left:55%; top:8px;
     backdrop-filter: blur(8px);
   }
 
   .msg{
-    margin-top: 18px;
+    margin-top:18px;
     font-size: clamp(18px, 2.6vw, 26px);
     font-weight:900;
-    min-height: 34px;
+    min-height:34px;
     text-shadow: 0 16px 40px rgba(0,0,0,.45);
   }
 
-  .qa{ margin: 14px auto 0; max-width: 760px; display:none; }
+  .qa{ margin:14px auto 0; max-width:760px; display:none; }
   .qa.show{ display:block; }
-
   .q{ font-size: clamp(16px, 2.4vw, 22px); font-weight:900; margin: 10px 0 12px; }
-
-  .ansRow{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom: 10px; }
+  .ansRow{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:10px; }
 
   .ansBtn{
     padding: 12px 16px;
     font-size: 15px;
-    border-radius: 999px;
+    border-radius:999px;
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255,255,255,.16);
     color:#fff;
@@ -230,9 +193,32 @@
   }
   .ansBtn:hover{ transform: translateY(-1px); }
 
-  .reply{ font-size: 14px; opacity:.95; min-height: 18px; }
+  .reply{ font-size:14px; opacity:.95; min-height:18px; }
+  .footerTip{ margin-top:12px; font-size:13px; opacity:.90; }
 
-  .footerTip{ margin-top: 12px; font-size: 13px; opacity:.90; }
+  .caricature{
+    position:absolute;
+    right: 18px;
+    top: 18px;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 34px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 14px 30px rgba(0,0,0,.22);
+    backdrop-filter: blur(10px);
+    transform: rotate(-2deg);
+    transition: transform .15s ease, filter .15s ease;
+    user-select:none;
+  }
+  .caricature.pop{
+    transform: rotate(2deg) scale(1.08);
+    filter: brightness(1.08);
+  }
 
   .heart{
     position:fixed;
@@ -244,7 +230,6 @@
     filter: drop-shadow(0 8px 18px rgba(0,0,0,.20));
     z-index: 0;
   }
-
   @keyframes floatUp{
     from{ transform: translateY(0) translateX(0) scale(.9); opacity:0; }
     10%{ opacity:.65; }
@@ -256,15 +241,13 @@
 <body>
   <div class="wrap">
     <div class="card">
+      <div class="caricature" id="caricature">🥺</div>
 
       <!-- MODE SELECT SCREEN -->
       <div id="modeScreen" class="section show">
         <div class="badge" id="modeBadge">💌 Normal Mode</div>
         <h1>Choose your vibe 💘</h1>
-        <p>
-          Pick how dramatic this love story should be.
-          Then hit <b>Start</b> and we begin 😌
-        </p>
+        <p>Pick how dramatic this love story should be. Then hit <b>Start</b> and we begin 😌</p>
 
         <div class="btnRow">
           <div class="modeToggle">
@@ -278,9 +261,7 @@
           <button class="primary" id="startExperience" type="button">Start 🎵</button>
         </div>
 
-        <div class="footerTip">
-          Normal plays <b>stay_with_me_intro.mp3</b> • Destiny plays <b>beutiful_life.mp3</b>
-        </div>
+        <div class="footerTip">Normal plays <b>stay_with_me_intro.mp3</b> • Destiny plays <b>beutiful_life.mp3</b></div>
       </div>
 
       <!-- MAIN SCREEN -->
@@ -289,7 +270,7 @@
         <h1>Will you be my Valentine? 💕</h1>
         <p>Choose wisely… the “No” button is shy 😅</p>
 
-        <div class="buttons">
+        <div class="buttons" id="choiceArea">
           <button id="yesBtn" type="button">Yes 😍</button>
           <button id="noBtn" type="button">No 🙈</button>
         </div>
@@ -310,19 +291,11 @@
 
         <div class="footerTip">Tip: answer the little questions after you click Yes 😌</div>
       </div>
-
     </div>
   </div>
 
-  <!-- Normal Mode Music -->
-  <audio id="normalMusic" loop preload="auto">
-    <source src="stay_with_me_intro.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Destiny Mode Music -->
-  <audio id="destinyMusic" loop preload="auto">
-    <source src="beutiful_life.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="normalMusic" loop preload="auto"><source src="stay_with_me_intro.mp3" type="audio/mpeg"></audio>
+  <audio id="destinyMusic" loop preload="auto"><source src="beutiful_life.mp3" type="audio/mpeg"></audio>
 
 <script>
   const body = document.body;
@@ -351,33 +324,61 @@
   const musicToggle = document.getElementById("musicToggle");
   const restartMusic = document.getElementById("restartMusic");
 
-  let destinyMode = false;
-  let musicReady = false;
+  const caricature = document.getElementById("caricature");
+  const choiceArea = document.getElementById("choiceArea");
 
-  // --- No/Yes scaling + attempts ---
+  let destinyMode = false;
+  let isAccepted = false;
+
+  // Attempts: shrink NO, grow YES, after 5 tries show universe message
   let noAttempts = 0;
   const MAX_ATTEMPTS = 5;
 
+  const cuteFaces = ["🥺","😊","😳","🙈","🥰","😏","🤭","💘","😚","😌"];
+  const destinyFaces = ["❄️","😶‍🌫️","🕯️","🗡️","🌙","🧣","😮‍💨","🥀","🪽","✨"];
+  const nopeFaces = ["😏","🙃","😈","🤨","😌","🫣"];
+
+  function popCaricature(face){
+    caricature.textContent = face;
+    caricature.classList.add("pop");
+    setTimeout(()=>caricature.classList.remove("pop"), 170);
+  }
+  function randomFace(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
   function applyScales(){
-    // No shrinks each attempt, Yes grows
-    const noScale  = Math.max(0.45, 1 - noAttempts * 0.12);
-    const yesScale = Math.min(1.65, 1 + noAttempts * 0.10);
+    const noScale  = Math.max(0.40, 1 - noAttempts * 0.12);
+    const yesScale = Math.min(1.70, 1 + noAttempts * 0.10);
 
     noBtn.style.transform = `scale(${noScale})`;
-    yesBtn.style.transform = `scale(${yesScale})`;
+    if(!isAccepted){
+      yesBtn.style.transform = `scale(${yesScale})`;
+    }
 
-    // After 5 attempts: universe decides
     if(noAttempts >= MAX_ATTEMPTS){
       message.textContent = "✨ The universe has decided. ✨";
-      // Make the message linger and subtly push toward Yes
-      yesBtn.style.filter = "brightness(1.05)";
-      // No becomes tiny and keeps running anyway
+      yesBtn.style.filter = "brightness(1.08)";
+      popCaricature("✨");
     }
   }
 
   function bumpAttempt(){
+    if(isAccepted) return;
     noAttempts++;
+    popCaricature(randomFace(nopeFaces));
     applyScales();
+  }
+
+  function resetAcceptanceUI(){
+    isAccepted = false;
+    yesBtn.disabled = false;
+    yesBtn.classList.remove("locked");
+    yesBtn.textContent = "Yes 😍";
+    yesBtn.style.transform = "scale(1)";
+    yesBtn.style.filter = "";
+    noBtn.style.display = "";
+    noBtn.style.transform = "scale(1)";
+    message.textContent = "";
+    qaBox.classList.remove("show");
   }
 
   function resetAttempts(){
@@ -390,10 +391,10 @@
   function setMode(isDestiny){
     destinyMode = isDestiny;
     body.classList.toggle("destiny", destinyMode);
-
     const label = destinyMode ? "❄️ Destiny Mode" : "💌 Normal Mode";
     modeBadge.textContent = label;
     mainBadge.textContent = label;
+    popCaricature(destinyMode ? "❄️" : "🥺");
   }
 
   function activeAudio(){ return destinyMode ? destinyMusic : normalMusic; }
@@ -407,49 +408,47 @@
       a.volume = 0.9;
       a.load();
       await a.play();
-      musicReady = true;
       return true;
     }catch(e){
-      musicReady = false;
       alert("Music couldn't play. Check both MP3 files are uploaded next to Val.html and try again.");
       return false;
     }
   }
 
-  modeSwitch.addEventListener("click", ()=>{
-    setMode(!destinyMode);
-  });
+  modeSwitch.addEventListener("click", ()=> setMode(!destinyMode));
 
   startExperience.addEventListener("click", async ()=>{
     modeScreen.classList.remove("show");
     mainScreen.classList.add("show");
+    resetAcceptanceUI();
     resetAttempts();
-    message.textContent = "";
+    popCaricature(destinyMode ? "🌙" : "😊");
     await playMusic();
   });
 
   backToMode.addEventListener("click", ()=>{
     normalMusic.pause();
     destinyMusic.pause();
-
-    qaBox.classList.remove("show");
-    message.textContent = "";
-    noBtn.style.display = "";
+    resetAcceptanceUI();
     resetAttempts();
-
     mainScreen.classList.remove("show");
     modeScreen.classList.add("show");
+    popCaricature(destinyMode ? "❄️" : "🥺");
   });
 
-  // ✅ NO button: visible, but impossible to click + shrinks each try
+  // ✅ Keep NO inside the choice area so it never blocks question buttons
   function moveNo(){
-    const padding = 20;
+    const pad = 8;
+    const area = choiceArea.getBoundingClientRect();
     const rect = noBtn.getBoundingClientRect();
-    const maxX = window.innerWidth - rect.width - padding;
-    const maxY = window.innerHeight - rect.height - padding;
 
-    const x = Math.random() * (maxX - padding) + padding;
-    const y = Math.random() * (maxY - padding) + padding;
+    const minX = area.left + pad;
+    const maxX = area.right - rect.width - pad;
+    const minY = area.top + pad;
+    const maxY = area.bottom - rect.height - pad;
+
+    const x = Math.max(minX, Math.random() * (maxX - minX) + minX);
+    const y = Math.max(minY, Math.random() * (maxY - minY) + minY);
 
     noBtn.style.transition = "left 0.15s ease, top 0.15s ease";
     noBtn.style.left = x + "px";
@@ -462,19 +461,17 @@
     moveNo();
   }
 
-  // runs away on EVERYTHING
   noBtn.addEventListener("mouseover", noEscape);
   noBtn.addEventListener("mousedown", noEscape);
   noBtn.addEventListener("click", noEscape);
   noBtn.addEventListener("touchstart", noEscape, {passive:false});
   noBtn.addEventListener("focus", noEscape);
 
-  // extra chaos: relocates occasionally
   setInterval(()=>{
-    if(mainScreen.classList.contains("show") && noBtn.style.display !== "none"){
+    if(mainScreen.classList.contains("show") && noBtn.style.display !== "none" && !isAccepted){
       moveNo();
     }
-  }, 2000);
+  }, 2200);
 
   // Floating hearts
   const heartEmojis = ["💗","💖","💕","💘","💝","🌸"];
@@ -490,12 +487,14 @@
     setTimeout(()=>h.remove(), 11000);
   }, 700);
 
+  // ✅ Decks (fixed)
   const cuteDeck = [
     { q:"Choose our first Valentine mission 💞",
       a:["Dinner date 🍽️","Dessert date 🍰","Coffee + walk ☕🚶"],
       r:["Elegant choice. I’ll book the romance.","Sweet choice… literally 😌","K-drama walking scene unlocked."]},
     { q:"How should I behave on the date?",
-      a:["Gentleman mode 🕴️nd turned night to day."]},
+      a:["Gentleman mode 🕴️","Flirty mode 😏","Both ✅"],
+      r:["Classic and charming.","Bold. I like it.","Perfect. You understand the assignment 😌💘"]},
     { q:"If I hold your hand, what happens?",
       a:["Smile 😊","Blush 🙈","Pretend annoyed 😤❤️"],
       r:["Cute. I’m winning already.","Adorable. I’ll be careful.","Noted. I’ll act innocent 😌"]},
@@ -522,6 +521,7 @@
       qText.textContent = destinyMode ? "❄️ Destiny complete. Valentine confirmed." : "💖 Perfect. Valentine confirmed.";
       ansRow.innerHTML = "";
       replyText.textContent = "Now send the link and pretend this was effortless 😌";
+      popCaricature(destinyMode ? "✨" : "💘");
       return;
     }
     const item = d[deckIndex];
@@ -536,14 +536,28 @@
       b.textContent = label;
       b.addEventListener("click", ()=>{
         replyText.textContent = item.r[i] || "Noted 😌";
+        popCaricature(randomFace(destinyMode ? destinyFaces : cuteFaces));
         setTimeout(()=>{ deckIndex++; renderQA(); }, 850);
       });
       ansRow.appendChild(b);
     });
   }
 
+  // ✅ Accept: lock Yes, hide No, show Q&A
   yesBtn.addEventListener("click", ()=>{
+    if(isAccepted) return;
+    isAccepted = true;
+
     message.textContent = destinyMode ? "❄️ Destiny confirmed. You’re my Valentine." : "I knew it 😍 Best decision ever!";
+    popCaricature(destinyMode ? "🕯️" : "🥰");
+
+    yesBtn.disabled = true;
+    yesBtn.classList.add("locked");
+    yesBtn.textContent = "Locked in 💍";
+    yesBtn.style.transform = "scale(1)";
+
+    noBtn.style.display = "none"; // hides it so it can't block anything
+
     qaBox.classList.add("show");
     deckIndex = 0;
     renderQA();
@@ -553,12 +567,14 @@
     const a = activeAudio();
     if(a.paused) await playMusic();
     else a.pause();
+    popCaricature(destinyMode ? "🌙" : "😌");
   });
 
   restartMusic.addEventListener("click", async ()=>{
     const a = activeAudio();
     a.currentTime = 0;
     await playMusic();
+    popCaricature(destinyMode ? "✨" : "💘");
   });
 
   setMode(false);
