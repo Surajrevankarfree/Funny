@@ -7,19 +7,20 @@
 
 <style>
   :root{
-    /* Normal palette (darker, elegant) */
-    --n1:#4a1f2d;
-    --n2:#7a3b52;
-    --shadow: 0 22px 60px rgba(0,0,0,.35);
+    --n1:#3b1623;     /* deeper */
+    --n2:#6b2f45;     /* muted */
+    --shadow: 0 22px 60px rgba(0,0,0,.38);
 
-    /* Destiny palette */
     --d1:#0b1020;
     --d2:#1b1f3a;
+
+    --glass1: rgba(255,255,255,.14);
+    --glass2: rgba(255,255,255,.08);
+    --stroke: rgba(255,255,255,.16);
   }
 
   *{ box-sizing:border-box; }
 
-  /* NORMAL MODE */
   body{
     margin:0;
     height:100vh;
@@ -29,36 +30,33 @@
     color:#fff;
 
     background:
-      radial-gradient(circle at 30% 25%, rgba(176,106,126,.28) 0%, transparent 55%),
-      radial-gradient(circle at 70% 70%, rgba(176,106,126,.14) 0%, transparent 60%),
+      radial-gradient(circle at 25% 20%, rgba(176,106,126,.22) 0%, transparent 58%),
+      radial-gradient(circle at 75% 70%, rgba(176,106,126,.12) 0%, transparent 62%),
       linear-gradient(135deg, var(--n1), var(--n2));
-
-    transition: background 0.6s ease;
+    transition: background .6s ease;
     position: relative;
   }
 
-  /* vignette */
   body::before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
     background:
-      radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.25) 55%, rgba(0,0,0,.45) 100%);
+      radial-gradient(circle at 50% 38%, rgba(0,0,0,0) 0%, rgba(0,0,0,.22) 55%, rgba(0,0,0,.52) 100%);
     z-index:0;
   }
 
-  /* DESTINY MODE */
   body.destiny{
     background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 45%),
-      radial-gradient(circle at 70% 30%, rgba(255,255,255,.10), transparent 42%),
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.16), transparent 46%),
+      radial-gradient(circle at 80% 30%, rgba(255,255,255,.08), transparent 44%),
       linear-gradient(135deg, var(--d1), var(--d2));
   }
 
   body.destiny::before{
     background:
-      radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.28) 55%, rgba(0,0,0,.55) 100%);
+      radial-gradient(circle at 50% 38%, rgba(0,0,0,0) 0%, rgba(0,0,0,.28) 55%, rgba(0,0,0,.60) 100%);
   }
 
   .wrap{
@@ -72,14 +70,23 @@
   }
 
   .card{
-    width:min(900px, 95vw);
-    padding: 34px 26px 28px;
+    width:min(920px, 95vw);
+    padding: 28px 26px 24px;
     border-radius: 28px;
-    background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
-    border: 1px solid rgba(255,255,255,.16);
+    background: linear-gradient(180deg, var(--glass1), var(--glass2));
+    border: 1px solid var(--stroke);
     box-shadow: var(--shadow);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
     position:relative;
+  }
+
+  /* Top row: mode + locked badge */
+  .topRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom: 12px;
   }
 
   .badge{
@@ -91,13 +98,25 @@
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255,255,255,.16);
     font-size: 14px;
-    margin-bottom: 12px;
     font-weight: 800;
+    white-space:nowrap;
   }
+
+  .lockedBadge{
+    display:none;
+    padding:10px 14px;
+    border-radius:999px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    font-size: 14px;
+    font-weight: 900;
+    white-space:nowrap;
+  }
+  .lockedBadge.show{ display:inline-flex; gap:8px; align-items:center; }
 
   h1{
     margin: 10px 0 6px;
-    font-size: clamp(30px, 4.8vw, 46px);
+    font-size: clamp(30px, 4.8vw, 48px);
     line-height:1.1;
     text-shadow: 0 16px 40px rgba(0,0,0,.45);
   }
@@ -107,6 +126,11 @@
     max-width: 62ch;
     font-size: clamp(15px, 2.2vw, 18px);
     opacity:.95;
+  }
+
+  .subtle{
+    opacity:.88;
+    margin-top: 6px;
   }
 
   button{
@@ -121,7 +145,7 @@
     transform-origin:center;
   }
   button:active{ transform: translateY(1px) scale(.99); }
-  button:disabled{ cursor: default; opacity:.80; }
+  button:disabled{ cursor: default; opacity:.82; }
 
   .btnRow{
     display:flex;
@@ -171,11 +195,10 @@
     left: 2px;
     transition: left .18s ease;
   }
-
   body.destiny .knob{ left: 30px; }
 
   .section{
-    margin-top: 18px;
+    margin-top: 10px;
     display:none;
   }
   .section.show{ display:block; }
@@ -199,19 +222,11 @@
     z-index: 2;
   }
 
-  /* ✅ Yes becomes a badge and slides up */
-  #yesBtn.yes-badge{
-    position:absolute;
-    left:50%;
-    top:-52px;
-    transform: translateX(-50%) scale(.92);
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.20);
-    color:#fff;
-    box-shadow:none;
-    padding: 10px 14px;
-    font-size: 14px;
-    z-index: 2;
+  /* Yes disappears smoothly after accept */
+  #yesBtn.fadeOut{
+    opacity: 0;
+    transform: scale(.92);
+    pointer-events:none;
   }
 
   #noBtn{
@@ -219,7 +234,7 @@
     border: 1px solid rgba(255,255,255,.18);
     color:#fff;
     position:absolute;
-    left: 55%;
+    left: 60%;
     top: 10px;
     backdrop-filter: blur(8px);
     z-index: 2;
@@ -235,7 +250,7 @@
 
   .qa{
     margin: 14px auto 0;
-    max-width: 820px;
+    max-width: 860px;
     display:none;
   }
   .qa.show{ display:block; }
@@ -282,7 +297,7 @@
   .caricature{
     position:absolute;
     right: 18px;
-    top: 18px;
+    top: 16px;
     width: 64px;
     height: 64px;
     border-radius: 18px;
@@ -309,7 +324,7 @@
     position:fixed;
     bottom:-60px;
     font-size: 18px;
-    opacity:.65;
+    opacity:.60;
     pointer-events:none;
     animation: floatUp linear forwards;
     filter: drop-shadow(0 8px 18px rgba(0,0,0,.20));
@@ -317,9 +332,9 @@
   }
 
   @keyframes floatUp{
-    from{ transform: translateY(0) translateX(0) scale(.9); opacity:0; }
-    10%{ opacity:.65; }
-    to{ transform: translateY(-120vh) translateX(var(--drift)) scale(1.25); opacity:0; }
+    from{ transform: translateY(0) translateX(0) scale(.92); opacity:0; }
+    10%{ opacity:.60; }
+    to{ transform: translateY(-120vh) translateX(var(--drift)) scale(1.22); opacity:0; }
   }
 </style>
 </head>
@@ -329,11 +344,15 @@
     <div class="card">
       <div class="caricature" id="caricature">🥺</div>
 
+      <div class="topRow">
+        <div class="badge" id="modeBadge">💌 Normal Mode</div>
+        <div class="lockedBadge" id="lockedBadge">💍 Locked in</div>
+      </div>
+
       <!-- MODE SELECT SCREEN -->
       <div id="modeScreen" class="section show">
-        <div class="badge" id="modeBadge">💌 Normal Mode</div>
         <h1>Choose your vibe 💘</h1>
-        <p>
+        <p class="subtle">
           Pick how dramatic this love story should be.
           Then hit <b>Start</b> and we begin 😌
         </p>
@@ -357,9 +376,8 @@
 
       <!-- MAIN SCREEN -->
       <div id="mainScreen" class="section">
-        <div class="badge" id="mainBadge">💌 Normal Mode</div>
         <h1>Will you be my Valentine? 💕</h1>
-        <p>Choose wisely… the “No” button is determined, but not clickable 😅</p>
+        <p class="subtle">Choose wisely… the “No” button is shy 😅</p>
 
         <div class="buttons" id="choiceArea">
           <button id="yesBtn" type="button">Yes 😍</button>
@@ -380,12 +398,11 @@
           </div>
         </div>
 
-        <div class="footerTip">Tip: click “Yes” to unlock the cute questions 😌</div>
+        <div class="footerTip" id="tipLine">Tip: click “Yes” to unlock the cute questions 😌</div>
       </div>
     </div>
   </div>
 
-  <!-- Music -->
   <audio id="normalMusic" loop preload="auto">
     <source src="stay_with_me_intro.mp3" type="audio/mpeg">
   </audio>
@@ -399,7 +416,8 @@
   const modeScreen = document.getElementById("modeScreen");
   const mainScreen = document.getElementById("mainScreen");
   const modeBadge  = document.getElementById("modeBadge");
-  const mainBadge  = document.getElementById("mainBadge");
+
+  const lockedBadge = document.getElementById("lockedBadge");
 
   const modeSwitch = document.getElementById("modeSwitch");
   const startExperience = document.getElementById("startExperience");
@@ -422,6 +440,7 @@
 
   const caricature = document.getElementById("caricature");
   const choiceArea = document.getElementById("choiceArea");
+  const tipLine = document.getElementById("tipLine");
 
   let destinyMode = false;
   let isAccepted = false;
@@ -431,9 +450,9 @@
   const MAX_ATTEMPTS = 5;
 
   // Caricature face sets
-  const cuteFaces   = ["🥺","😊","😳","🙈","🥰","😏","🤭","💘","😚","😌","🫶"];
-  const destinyFaces= ["❄️","😶‍🌫️","🕯️","🗡️","🌙","🧣","😮‍💨","🥀","🪽","✨","📜"];
-  const nopeFaces   = ["😏","🙃","😈","🤨","😌","🫣","😤"];
+  const cuteFaces    = ["🥺","😊","😳","🙈","🥰","😏","🤭","💘","😚","😌","🫶"];
+  const destinyFaces = ["❄️","😶‍🌫️","🕯️","🗡️","🌙","🧣","😮‍💨","🥀","🪽","✨","📜"];
+  const nopeFaces    = ["😏","🙃","😈","🤨","😌","🫣","😤"];
 
   function popCaricature(face){
     caricature.textContent = face;
@@ -448,7 +467,6 @@
 
     const label = destinyMode ? "❄️ Destiny Mode" : "💌 Normal Mode";
     modeBadge.textContent = label;
-    mainBadge.textContent = label;
 
     popCaricature(destinyMode ? "❄️" : "🥺");
   }
@@ -489,13 +507,18 @@
     qText.textContent = "";
 
     yesBtn.disabled = false;
-    yesBtn.classList.remove("yes-badge");
+    yesBtn.classList.remove("fadeOut");
     yesBtn.textContent = "Yes 😍";
     yesBtn.style.transform = "scale(1)";
+    yesBtn.style.filter = "";
+
+    lockedBadge.classList.remove("show");
 
     noBtn.style.display = "";
-    noBtn.style.left = "55%";
+    noBtn.style.left = "60%";
     noBtn.style.top  = "10px";
+
+    tipLine.style.display = "";
   }
 
   function applyScales(){
@@ -521,21 +544,22 @@
     applyScales();
   }
 
-  // ✅ Keep NO inside the choice area so it never blocks question buttons
+  /* ✅ FIXED: No movement uses LOCAL coords inside the choiceArea */
   function moveNo(){
     const pad = 6;
-    const area = choiceArea.getBoundingClientRect();
-    const rect = noBtn.getBoundingClientRect();
+    const areaW = choiceArea.clientWidth;
+    const areaH = choiceArea.clientHeight;
 
-    const minX = area.left + pad;
-    const maxX = area.right - rect.width - pad;
-    const minY = area.top + pad;
-    const maxY = area.bottom - rect.height - pad;
+    const rectW = noBtn.offsetWidth;
+    const rectH = noBtn.offsetHeight;
 
-    const x = (maxX > minX) ? (Math.random() * (maxX - minX) + minX) : minX;
-    const y = (maxY > minY) ? (Math.random() * (maxY - minY) + minY) : minY;
+    const maxX = Math.max(pad, areaW - rectW - pad);
+    const maxY = Math.max(pad, areaH - rectH - pad);
 
-    noBtn.style.transition = "left 0.15s ease, top 0.15s ease";
+    const x = Math.random() * (maxX - pad) + pad;
+    const y = Math.random() * (maxY - pad) + pad;
+
+    noBtn.style.transition = "left .15s ease, top .15s ease";
     noBtn.style.left = x + "px";
     noBtn.style.top  = y + "px";
   }
@@ -557,7 +581,7 @@
     if(mainScreen.classList.contains("show") && noBtn.style.display !== "none"){
       moveNo();
     }
-  }, 2000);
+  }, 1800);
 
   // MODE switch
   modeSwitch.addEventListener("click", ()=> setMode(!destinyMode));
@@ -568,6 +592,9 @@
     resetUI();
     popCaricature(destinyMode ? "🌙" : "😊");
     await playMusic();
+
+    // place No once so it starts inside area nicely
+    setTimeout(moveNo, 120);
   });
 
   backToMode.addEventListener("click", ()=>{
@@ -634,7 +661,6 @@
       qText.textContent = destinyMode
         ? "❄️ Destiny complete. Valentine confirmed."
         : "💖 Perfect. Valentine confirmed.";
-
       ansRow.innerHTML = "";
       replyText.textContent = "";
       popCaricature(destinyMode ? "✨" : "💘");
@@ -665,7 +691,7 @@
     });
   }
 
-  // YES click: lock as badge and show questions
+  // YES click: fade out the big button, show locked badge, show questions
   yesBtn.addEventListener("click", ()=>{
     if(isAccepted) return;
     isAccepted = true;
@@ -676,9 +702,15 @@
 
     popCaricature(destinyMode ? "🕯️" : "🥰");
 
-    yesBtn.disabled = true;
-    yesBtn.classList.add("yes-badge");
-    yesBtn.textContent = "Locked in 💍";
+    tipLine.style.display = "none";
+
+    // fade the big button away (looks clean)
+    yesBtn.classList.add("fadeOut");
+    setTimeout(()=>{
+      yesBtn.disabled = true;
+    }, 200);
+
+    lockedBadge.classList.add("show");
 
     qaBox.classList.add("show");
     deckIndex = 0;
@@ -699,19 +731,19 @@
     popCaricature(destinyMode ? "✨" : "💘");
   });
 
-  // floating hearts
+  // Floating hearts
   const heartEmojis = ["💗","💖","💕","💘","💝","🌸"];
   setInterval(()=>{
     const h = document.createElement("div");
     h.className = "heart";
     h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
     h.style.left = Math.random()*100 + "vw";
-    h.style.setProperty("--drift", (Math.random()*140 - 70) + "px");
-    h.style.fontSize = (Math.random()*14 + 12) + "px";
+    h.style.setProperty("--drift", (Math.random()*120 - 60) + "px");
+    h.style.fontSize = (Math.random()*12 + 12) + "px";
     h.style.animationDuration = (Math.random()*4.0 + 6.0) + "s";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(), 11000);
-  }, 700);
+  }, 750);
 
   // init
   setMode(false);
